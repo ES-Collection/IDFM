@@ -13,6 +13,7 @@
 
 */
 
+#include 'fontDrop.js'
 
 function fontManager() {
     var Fm = this;
@@ -33,6 +34,7 @@ function fontManager() {
 
     // P R I V A T E   F U N C T I O N S 
     // - - - - - - - - - - - - - - - - -
+
     function copy ( obj ) {
       return JSON.parse( JSON.stringify(obj) );
     }
@@ -43,7 +45,7 @@ function fontManager() {
       return unicodeArray;
     }
 
-    function drawPath( entirePath ) {
+    function drawPath( Shape, percent ) {
       // This functions draws the entire path
     }
 
@@ -113,6 +115,42 @@ function fontManager() {
       // It is up to the user to make sure they don't break any font licence when saving
       // the font in a different format. This font manager will always alert the user
       // every time they add a new font to the database.
+      var dialog = new Window('dialog', 'Select a font');
+          dialog.orientation = 'column';
+          dialog.alignChildren = 'left';
+          dialog.margins = [15,10,15,20];
+
+      var onChangeCallBack = function() {
+        // refresh
+      }
+
+      // Start Fonts Panel
+      // -----------------
+      var fontPanel = dialog.add("panel", undefined, "Fonts");
+      fontPanel.margins       = [10,15,10,20];
+      fontPanel.alignment     = "fill";
+      fontPanel.alignChildren = "left";
+      fontPanel.orientation   = 'column';
+
+      fontPanel.add('statictext', undefined, 'Choose a font:');
+      var fontRow = fontPanel.add('group');
+      var fontSelect = FontSelect(fontRow, undefined, onChangeCallBack );
+
+      // Add OK/Cancel
+      var cancelBut = presetPanel.add('button', undefined, 'Cancel'   , {name: 'cancel' });
+      var okBut     = presetPanel.add('button', undefined, 'Generate' , {name: 'OK'     });
+
+      // Set Return/Enter key to OK window
+      okBut.shortcutKey = 'R';
+      okBut.onShortcutKey = okBut.onClick;
+      dialog.defaultElement = okBut;
+
+      if (dialog.show() === 1) {
+        return fontSelect(getFont);
+      } else {
+        // User pressed cancel
+        return false;
+      }
 
     }
 
