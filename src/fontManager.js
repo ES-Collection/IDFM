@@ -39,6 +39,22 @@ function fontManager() {
       return JSON.parse( JSON.stringify(obj) );
     }
 
+    function copyPath( Geometry ) {
+        var paths = [];
+        switch ( Geometry.constructor.name ) {
+            case "Rectangle":
+            case "Oval":
+            case "Polygon":
+                for( var pathCount = 0; pathCount < Geometry.paths.length; pathCount++ ) {
+                    paths.push( Geometry.paths[pathCount].entirePath );
+                }
+                break;
+            default:
+                alert("Rectangle, Oval or Polygon expected but received " + Geometry.constructor.name);
+        }
+        return paths;
+    }
+
     function getUnicode( stringText ) {
       var unicodeArray = new Array();
       // For every char in string save unocode 
